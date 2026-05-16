@@ -87,6 +87,14 @@ namespace NinjaTrader.NinjaScript.Strategies
         public bool UseRegimeAdapt { get; set; }
 
         [NinjaScriptProperty]
+        [Display(Name="Disable Longs (Short Only Mode)", GroupName="Signal Engine", Order=5)]
+        public bool DisableLongs { get; set; }
+
+        [NinjaScriptProperty]
+        [Display(Name="Reverse All Signals (Fade Mode)", GroupName="Signal Engine", Order=6)]
+        public bool ReverseSignals { get; set; }
+
+        [NinjaScriptProperty]
         [Display(Name="Stop Loss Mode (ATR / Structure / Both)", GroupName="Risk Management", Order=1)]
         public string StopMode { get; set; }
 
@@ -163,6 +171,8 @@ namespace NinjaTrader.NinjaScript.Strategies
                 RequireVolume     = true;
                 UseHtfFilter      = true;
                 UseRegimeAdapt    = true;
+                DisableLongs      = false;
+                ReverseSignals    = false;
                 StopMode          = "ATR";
                 AtrSlMult         = 1.2;
                 AtrTp1Mult        = 2.0;
@@ -291,8 +301,15 @@ namespace NinjaTrader.NinjaScript.Strategies
             bool   bbSqueeze  = bbWidthVal < bbWidthAvg * 0.7;
             if (bbSqueeze) return;
 
-            bool longOk  = totalScore >= threshold  && volOk && Position.MarketPosition == MarketPosition.Flat;
-            bool shortOk = totalScore <= -threshold && volOk && Position.MarketPosition == MarketPosition.Flat;
+            bool rawLongOk  = totalScore >= threshold  && volOk && Position.MarketPosition == MarketPosition.Flat;
+            bool rawShortOk = totalScore <= -threshold && volOk && Position.MarketPosition == MarketPosition.Flat;
+
+            // ReverseSignals: flip buy/sell signals
+            bool longOk  = ReverseSignals ? rawShortOk : rawLongOk;
+            bool shortOk = ReverseSignals ? rawLongOk  : rawShortOk;
+
+            // DisableLongs: short-only mode
+            if (DisableLongs) longOk = false;
 
             double atrVal  = atr14[0];
             double slMult  = GetDynamicSlMult();
@@ -614,6 +631,8 @@ namespace NinjaTrader.NinjaScript.Strategies
 
             string txt =
                 "=== PROP SNIPER PRO v1.2 ===\n" +
+                (DisableLongs    ? "[SHORT ONLY MODE]\n" : "") +
+                (ReverseSignals  ? "[FADE / REVERSE MODE]\n" : "") +
                 "SIGNAL  : " + dir          + "\n" +
                 "SCORE   : " + totalScore + " / 10\n" +
                 "REGIME  : " + regimeStr    + "\n" +
@@ -648,7 +667,10 @@ namespace NinjaTrader.NinjaScript.Strategies
 
         public override string DisplayName
         {
-            get { return "PropSniperPro v1.2 [" + MinScore + "pts | " + StopMode + " SL]"; }
+            get {
+                string flags = (DisableLongs ? "|NoLong" : "") + (ReverseSignals ? "|Fade" : "");
+                return "PropSniperPro v1.2 [" + MinScore + "pts | " + StopMode + " SL" + flags + "]";
+            }
         }
     }
 }
