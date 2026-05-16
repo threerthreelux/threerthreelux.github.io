@@ -1,45 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Viral Engine</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 2rem;
-    }
-    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    p { color: #8b949e; font-size: 1.1rem; margin-bottom: 2rem; }
-    .links a {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.6rem 1.4rem;
-      background: #238636;
-      color: #fff;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .links a:hover { background: #2ea043; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viral Engine — Daily Health & Wealth Secrets</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #FF2D2D;
+    --gold: #FFD700;
+    --dark: #080808;
+    --dark2: #111111;
+    --dark3: #1a1a1a;
+    --white: #F5F5F0;
+    --gray: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,45,45,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,45,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.8s ease;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-badge {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 4px 12px;
+    margin-bottom: 20px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 12vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--white) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .tagline {
+    color: var(--gray);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--dark3); }
+  .divider-dot { width: 6px; height: 6px; background: var(--red); transform: rotate(45deg); }
+
+  /* Section label */
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  /* Channel cards */
+  .channels { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+
+  .channel-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    border-left: 3px solid var(--red);
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .channel-card:nth-child(1) { animation-delay: 0.1s; }
+  .channel-card:nth-child(2) { animation-delay: 0.2s; }
+  .channel-card:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .channel-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255,45,45,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .channel-card:hover { border-left-color: var(--gold); transform: translateX(4px); }
+  .channel-card:hover::after { opacity: 1; }
+
+  .channel-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--dark3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .channel-info { flex: 1; }
+  .channel-name { font-weight: 500; font-size: 15px; margin-bottom: 3px; }
+  .channel-desc { font-size: 12px; color: var(--gray); }
+
+  .channel-arrow {
+    color: var(--gray);
+    font-size: 18px;
+    transition: color 0.2s;
+  }
+  .channel-card:hover .channel-arrow { color: var(--gold); }
+
+  /* Social links */
+  .socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--dark2);
+    border: 1px solid var(--dark3);
+    text-decoration: none;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .social-link:nth-child(1) { animation-delay: 0.4s; }
+  .social-link:nth-child(2) { animation-delay: 0.5s; }
+
+  .social-link:hover { background: var(--dark3); color: var(--gold); }
+  .social-icon { font-size: 18px; }
+
+  /* Stats bar */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--dark3);
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease 0.6s both;
+  }
+
+  .stat {
+    background: var(--dark2);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Topics */
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease 0.7s both;
+  }
+
+  .topic-tag {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--dark3);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray);
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .topic-tag:hover { border-color: var(--red); color: var(--white); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--dark3);
+    animation: fadeUp 0.6s ease 0.8s both;
+  }
+
+  .footer p { font-size: 11px; color: var(--gray); letter-spacing: 1px; margin-bottom: 8px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; }
+  .footer-links a { font-size: 11px; color: var(--gray); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; }
+  .footer-links a:hover { color: var(--white); }
+
+  /* Pulse dot */
+  .live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+</style>
 </head>
 <body>
-  <h1>🔥 Viral Engine</h1>
-  <p>Building passive income — one channel at a time.</p>
-  <div class="links">
-    <a href="https://www.youtube.com/@KidneyHealthFacts" target="_blank">🩺 Kidney Health</a>
-    <a href="https://www.youtube.com/@DailyWealthTips4u" target="_blank">💰 Daily Wealth</a>
-    <a href="https://github.com/threerthreelux" target="_blank">🐙 GitHub</a>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-badge">🔥 DAILY CONTENT</div>
+    <h1>VIRAL<br>ENGINE</h1>
+    <p class="tagline"><span class="live-dot"></span>Health & Wealth Secrets — Posted Daily</p>
   </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Videos Daily</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">17K+</div>
+      <div class="stat-label">Total Views</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Channels</div>
+    </div>
+  </div>
+
+  <!-- YouTube Channels -->
+  <div class="section-label">📺 YouTube Channels</div>
+  <div class="channels">
+    <a href="https://www.youtube.com/@KidneyHealthFacts" target="_blank" class="channel-card">
+      <div class="channel-icon">💊</div>
+      <div class="channel-info">
+        <div class="channel-name">Health Insights Daily</div>
+        <div class="channel-desc">Daily health secrets doctors don't tell you</div>
+      </div>
+      <div class="channel-arrow">→</div>
+    </a>
+
+    <a href="https://www.youtube.com/@DailyWealthTips4u" target="_blank" class="channel-card">
+      <div class="channel-icon">💰</div>
+      <div class="channel-info">
+        <div class="channel-name">Daily Wealth Tips</div>
+        <div class="channel-desc">Money secrets banks hide from you</div>
+      </div>
+      <div class="channel-arrow">→</div>
+    </a>
+
+    <a href="https://www.youtube.com/@EarthSoul4u" target="_blank" class="channel-card">
+      <div class="channel-icon">🎵</div>
+      <div class="channel-info">
+        <div class="channel-name">EarthSoul Music</div>
+        <div class="channel-desc">Original AI-generated ambient music</div>
+      </div>
+      <div class="channel-arrow">→</div>
+    </a>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Social -->
+  <div class="section-label">📱 Follow Us</div>
+  <div class="socials">
+    <a href="https://www.tiktok.com/@bodymind4u" target="_blank" class="social-link">
+      <span class="social-icon">🎵</span> TikTok @bodymind4u
+    </a>
+    <a href="https://www.instagram.com/bodyminddaily4u" target="_blank" class="social-link">
+      <span class="social-icon">📸</span> Instagram @bodyminddaily4u
+    </a>
+  </div>
+
+  <!-- Topics -->
+  <div class="section-label">🔥 Topics We Cover</div>
+  <div class="topics">
+    <span class="topic-tag">Kidney Health</span>
+    <span class="topic-tag">Hormones</span>
+    <span class="topic-tag">Collagen</span>
+    <span class="topic-tag">Belly Fat</span>
+    <span class="topic-tag">Testosterone</span>
+    <span class="topic-tag">Liver Health</span>
+    <span class="topic-tag">Energy</span>
+    <span class="topic-tag">Investing</span>
+    <span class="topic-tag">Credit Score</span>
+    <span class="topic-tag">Debt Freedom</span>
+    <span class="topic-tag">Side Hustle</span>
+    <span class="topic-tag">Retirement</span>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2026 Viral Engine · All Rights Reserved</p>
+    <div class="footer-links">
+      <a href="https://threerthreelux.github.io/privacy">Privacy Policy</a>
+      <a href="https://threerthreelux.github.io/terms">Terms of Service</a>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
